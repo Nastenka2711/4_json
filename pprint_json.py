@@ -1,4 +1,6 @@
 import json
+import sys
+import os
 
 
 def load_data(filepath):
@@ -8,8 +10,16 @@ def load_data(filepath):
 
 
 def pretty_print_json(data):
-    print(json.dumps(data, skipkeys = True, ensure_ascii = False, sort_keys = True, indent = 4))
+    print(json.dumps(data, skipkeys=True, ensure_ascii=False,
+          sort_keys=True, indent=4))
 
 
 if __name__ == '__main__':
-    load_data(open('vodka.json','r'))
+    if len(sys.argv) == 1:
+        name_file = input("Введите название файла  ")
+    else:
+        name_file = sys.argv[1]
+    if os.path.exists(name_file) and os.path.isfile(name_file):
+        load_data(open(name_file, 'r'))
+    else:
+        print("Ошибка открытия файла")
