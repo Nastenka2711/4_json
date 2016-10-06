@@ -2,6 +2,7 @@ import json
 import sys
 import os
 
+
 def input_name_file():
     if len(sys.argv) == 1:
         name_file = input("Введите название файла  ")
@@ -17,6 +18,13 @@ def existence_file(filepath):
         return None
 
 
+def checking_json(name_file):
+    end_name_file = os.path.splitext(name_file)
+    if end_name_file[1] != '.json':
+        return 1
+    return 0
+
+
 def load_data(filepath):
     list_info_alcos = json.load(filepath)
     for list_info_alco in list_info_alcos:
@@ -30,7 +38,9 @@ def pretty_print_json(data):
 
 if __name__ == '__main__':
     name_file = input_name_file()
-    if existence_file(name_file) is None:
+    if checking_json(name_file) == 1:
+        print("Формат файла должен быть .json")
+    elif existence_file(name_file) is None:
         print("Ошибка открытия файла")
     else:
         load_data(open(name_file, 'r'))
