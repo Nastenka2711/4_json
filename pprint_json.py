@@ -3,32 +3,29 @@ import sys
 import os
 
 
-def input_name_file():
+def input_file_name():
     if len(sys.argv) == 1:
-        name_file = input("Введите название файла  ")
+        file_name = input("Введите название файла  ")
     else:
-        name_file = sys.argv[1]
-    return name_file
+        file_name = sys.argv[1]
+    return file_name
 
 
-def existence_file(filepath):
+def file_exists(filepath):
     if os.path.exists(filepath) and os.path.isfile(filepath):
-        return 0
-    else:
-        return None
+        return True
 
 
-def checking_json(name_file):
-    end_name_file = os.path.splitext(name_file)
-    if end_name_file[1] != '.json':
-        return 1
-    return 0
+def check_json(file_name):
+    if file_name.endswith('.json'):
+        return True
+    return False
 
 
 def load_data(filepath):
-    list_info_alcos = json.load(filepath)
-    for list_info_alco in list_info_alcos:
-        pretty_print_json(list_info_alco)
+    market_list = json.load(filepath)
+    for info_from_one_market in market_list:
+        pretty_print_json(info_from_one_market)
 
 
 def pretty_print_json(data):
@@ -37,10 +34,10 @@ def pretty_print_json(data):
 
 
 if __name__ == '__main__':
-    name_file = input_name_file()
-    if checking_json(name_file) == 1:
+    file_name = input_file_name()
+    if check_json(file_name) is False:
         print("Формат файла должен быть .json")
-    elif existence_file(name_file) is None:
+    elif file_exists(file_name) is None:
         print("Ошибка открытия файла")
     else:
-        load_data(open(name_file, 'r'))
+        load_data(open(file_name, 'r'))
