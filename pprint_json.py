@@ -12,20 +12,15 @@ def input_file_name():
 
 
 def file_exists(filepath):
-    if os.path.exists(filepath) and os.path.isfile(filepath):
-        return True
+    return os.path.exists(filepath) and os.path.isfile(filepath)
 
 
 def check_json(file_name):
-    if file_name.endswith('.json'):
-        return True
-    return False
+    return file_name.endswith('.json')
 
 
 def load_data(filepath):
-    market_list = json.load(filepath)
-    for info_from_one_market in market_list:
-        pretty_print_json(info_from_one_market)
+    pretty_print_json(json.load(filepath))
 
 
 def pretty_print_json(data):
@@ -33,11 +28,16 @@ def pretty_print_json(data):
           sort_keys=True, indent=4))
 
 
+def open_file(file_name):
+    with open(file_name, 'r') as file_data:
+        load_data(file_data)
+
+
 if __name__ == '__main__':
     file_name = input_file_name()
-    if check_json(file_name) is False:
+    if not check_json(file_name):
         print("Формат файла должен быть .json")
-    elif file_exists(file_name) is None:
+    elif not file_exists(file_name):
         print("Ошибка открытия файла")
     else:
-        load_data(open(file_name, 'r'))
+        open_file(file_name)
